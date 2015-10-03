@@ -6,17 +6,22 @@
       Hide Completed Tasks
     </label>
     <blaze-template name="loginButtons"></blaze-template>
-    <form class="new-task" ng-submit="addTask(newTask); newTask='';" ng-show="$root.currentUser">
+    <form class="new-task" ng-show="$root.currentUser" ng-submit="addTask(newTask); newTask='';">
       <input name="text" ng-model="newTask" placeholder="type to add new tasks" type="text"/>
     </form>
   </header>
 
   <ul>
-    <li ng-class="{'checked': task.checked}" ng-repeat="task in tasks">
+    <li ng-class="{'checked': task.checked, 'private': task.private}" ng-repeat="task in tasks">
       <button class="delete" ng-click="deleteTask(task)">&times;</button>
-      <input class="toggle-checked" ng-model="task.checked" ng-click="setChecked(task)" type="checkbox"/>
+      <input class="toggle-checked" ng-click="setChecked(task)" ng-model="task.checked" type="checkbox"/>
+      <button type="button" ng-if="task.owner==$root.currentUser._id" ng-click="setPrivate(task)">
+{{task.private==true?'Private': 'Public'}}
+      </button>
       <span class="text">
-        <strong>{{task.username}}</strong> - {{task.text}}
+        <strong>{{task.username}}</strong>
+        -
+        {{task.text}}
       </span>
     </li>
   </ul>
